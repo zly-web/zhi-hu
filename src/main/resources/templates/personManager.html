@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/jquery.js"></script>
+    <script type="text/javascript">
+        function updateShow(person_id) {
+            $.ajax({
+                url:"/person/updateShow",
+                type:"post",
+                data:{person_id:person_id},
+                success:function (data) {
+                    for(var i in data){
+                        $("input[name='"+i+"']").val(data[i]);
+                    }
+                }
+            })
+        }
+        var frmUrl = "";
+        function submits() {
+            alert(1)
+            var person_id = $("#person_id").val();
+            if(person_id == ""){
+                frmUrl = "/person/add";
+            }else{
+                frmUrl = "/person/updateSubmit";
+            }
+            $.ajax({
+                url:frmUrl,
+                type:"post",
+                data:
+                    {
+                        person_id:$("#person_id").val(),
+                        person_name:$("#person_name").val(),
+                        person_area_id:$("#person_area_id").val(),
+                        person_age:$("#person_age").val(),
+                        person_address:$("#person_address").val()
+                    },
+                success:function (data) {
+                    if(data){
+                        alert("操作成功")
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <table border="1" align="center">
+        <thead>
+        <th>编号</th>
+        <th>姓名</th>
+        <th>户口所在地</th>
+        <th>年龄</th>
+        <th>家庭住址</th>
+        <th>操作</th>
+        </thead>
+        <tbody th:each="e:${list}">
+        <tr>
+            <td th:text="${e.person_id}"></td>
+            <td th:text="${e.person_name}"></td>
+            <td th:text="${e.person_area_id}"></td>
+            <td th:text="${e.person_age}"></td>
+            <td th:text="${e.person_address}"></td>
+            <td>
+                <button type="button" th:onclick="'updateShow('+${e.person_id}+')'">修改</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table border="1" align="center">
+        <tbody>
+        <tr hidden>
+            <td>编号:</td>
+            <td>
+                <input type="text" id="person_id" name="person_id"/>
+            </td>
+        </tr>
+        <tr>
+            <td>名字:</td>
+            <td>
+                <input type="text" id="person_name" name="person_name"/>
+            </td>
+        </tr>
+        <tr>
+            <td>户口:</td>
+            <td>
+                <input type="text" id="person_area_id" name="person_area_id"/>
+            </td>
+        </tr>
+        <tr>
+            <td>年龄:</td>
+            <td>
+                <input type="text" id="person_age" name="person_age"/>
+            </td>
+        </tr>
+        <tr>
+            <td>住址:</td>
+            <td>
+                <input type="text" id="person_address" name="person_address"/>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="button" th:onclick="'submits()'">提交</button>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</body>
+</html>

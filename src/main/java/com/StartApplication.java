@@ -9,6 +9,6 @@ public class StartApplication {
         SpringApplication.run(StartApplication.class);
 
         System.out.println();
-
+        System.out.println();
     }
 }
